@@ -17,11 +17,10 @@ async function handleVote(userId, postId, newVote) {
   // Check if the user has already voted on this post
   if (!userId) {
     throw new Error("Cannot vote without being logged in");
-    return (
-      <div className="max-w-screen-lg mx-auto p-4 mt-10">
-        You need to login to create vote on a post <LoginButton />
-      </div>
-    );
+    // return (
+    //   <div className="max-w-screen-lg mx-auto p-4 mt-10">
+    //   </div>
+    // );
   }
 
   const existingVote = await getExistingVote(userId, postId);
