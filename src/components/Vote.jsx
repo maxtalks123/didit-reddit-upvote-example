@@ -2,6 +2,7 @@ import { db } from "@/db";
 import auth from "../app/middleware";
 import { revalidatePath } from "next/cache";
 import { VoteButtons } from "./VoteButtons";
+import Error from "../app/error";
 
 async function getExistingVote(userId, postId) {
   const { rows: existingVotes } = await db.query(
@@ -16,6 +17,11 @@ async function handleVote(userId, postId, newVote) {
   // Check if the user has already voted on this post
   if (!userId) {
     throw new Error("Cannot vote without being logged in");
+    return (
+      <div className="max-w-screen-lg mx-auto p-4 mt-10">
+        You need to login to create vote on a post <LoginButton />
+      </div>
+    );
   }
 
   const existingVote = await getExistingVote(userId, postId);
@@ -47,14 +53,39 @@ export async function Vote({ postId, votes }) {
   const session = await auth();
   const existingVote = await getExistingVote(session?.user?.id, postId);
 
+  // async function aftervote() {
+  //   "use server";
+  //   if (!session) {
+  //     return (
+  //       <div className="max-w-screen-lg mx-auto p-4 mt-10">
+  //         You need to login to create vote on a post <LoginButton />
+  //       </div>
+  //     );
+  //   }
+  // }
+
   async function upvote() {
     "use server";
     await handleVote(session?.user?.id, postId, 1);
+    // if (!session) {
+    //   return (
+    //     <div className="max-w-screen-lg mx-auto p-4 mt-10">
+    //       You need to login to create vote on a post <LoginButton />
+    //     </div>
+    //   );
+    // }
   }
 
   async function downvote() {
     "use server";
     await handleVote(session?.user?.id, postId, -1);
+    // if (!session) {
+    //   return (
+    //     <div className="max-w-screen-lg mx-auto p-4 mt-10">
+    //       You need to login to create vote on a post <LoginButton />
+    //     </div>
+    //   );
+    // }
   }
 
   return (
@@ -65,6 +96,7 @@ export async function Vote({ postId, votes }) {
           downvote={downvote}
           votes={votes}
           existingVote={existingVote}
+          // aftervote={aftervote}
         />
         {/* <button formAction={upvote}>
           {existingVote?.vote === 1 ? (

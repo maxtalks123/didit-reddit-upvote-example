@@ -10,7 +10,13 @@ import {
 } from "react-icons/tb";
 import { FaSpinner } from "react-icons/fa";
 
-export function VoteButtons({ upvote, downvote, votes, existingVote }) {
+export function VoteButtons({
+  upvote,
+  downvote,
+  votes,
+  existingVote,
+  // aftervote,
+}) {
   const { pending, data, method, action } = useFormStatus();
 
   return (

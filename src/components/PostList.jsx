@@ -25,6 +25,7 @@ export async function PostList({ currentPage = 1 }) {
             className=" py-4 flex space-x-6 hover:bg-zinc-200 rounded-lg"
           >
             <Vote postId={post.id} votes={post.vote_total} />
+
             <div>
               <Link
                 href={`/post/${post.id}`}
